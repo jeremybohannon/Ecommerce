@@ -1,0 +1,110 @@
+main {
+        padding-left: 0px;
+}
+
+.cartHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cartHeader h2,p {
+    display: block;
+}
+
+@media screen and (max-width: 650px) {
+    .cartHeader {
+        display: block;
+    }
+    .cartHeader h2,p {
+        display: inline-block;
+        width: auto;
+    }
+    
+    .cartAndCheckout {
+        float: none !important;
+        display: table !important;
+        margin: 0 auto;
+    }
+}
+
+.cartTableWrapper {
+    margin-top: 50px;
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cartTable {
+    width: 100%;
+    text-align: left;
+}
+
+.tablePrice, .tableQuantity {
+    text-align: center;
+}
+
+.tableTotal {
+    text-align: right;
+}
+
+tr:nth-child(even) {
+    background-color: var(--main-light-accent-color);
+}
+
+input[type="number"] {
+    display: block;
+    width: 64px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.subtotalWrapper {
+    text-align: right;
+    margin-top: 15px;
+    border-bottom: 3px solid var(--main-accent-color);
+}
+
+.subtotalWrapper span:last-child {
+    margin-left: 15px;
+}
+
+.cartAndCheckout {
+    display: block;
+    float: right;
+}
+
+.button {
+    display: block;
+    width: 180px;
+    min-width: 180px;
+    background-color: var(--main-accent-color);
+    color: var(--main-bg-color) !important;
+    border: none;
+    border-radius: 4px;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: var(--main-bg-color);
+    color: var(--main-accent-color) !important;
+    border: 2px solid var(--main-accent-color);
+}
+
+.invoiceDetail {
+    margin-top: 10px;
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+}
