@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business;
+
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,7 +23,8 @@ import javax.servlet.http.HttpSession;
 public class OrderController
 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List products = ProductDB.getProducts();
+        ArrayList<Product> products = ProductDB.getAllProducts();
+        
         HttpSession session = request.getSession();
         Cart cart = (Cart)session.getAttribute("theShoppingCart");
         if (cart == null) {
@@ -71,7 +72,7 @@ extends HttpServlet {
                     break;
                 }
                 case "checkout": {
-                    User user = (User)UserDB.getUsers().get(0);
+                    User user = (User)UserDB.getUser("1");
                     session.setAttribute("theUser", (Object)user);
                     subTotal = items.stream().map(item -> item.product.price * (double)item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
                     Order order = new Order();

@@ -1,4 +1,4 @@
-package business;
+
 
 import java.io.Serializable;
 
@@ -6,18 +6,21 @@ public class User
 implements Serializable {
     String firstName;
     String lastName;
-    String emailAddress;
+    String email;
     String address1;
     String address2;
     String city;
     String state;
     String postalCode;
     String country;
-
+    String userID;
+    String password;
+    
     public User() {
+        this.userID = "";
         this.firstName = "";
         this.lastName = "";
-        this.emailAddress = "";
+        this.email = "";
         this.address1 = "";
         this.address2 = "";
         this.city = "";
@@ -26,16 +29,25 @@ implements Serializable {
         this.country = "";
     }
 
-    public User(String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country) {
+    public User(String userID, String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country) {
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.email = emailAddress;
         this.address1 = address1;
         this.address2 = address2;
         this.city = city;
         this.state = state;
         this.postalCode = postalCode;
         this.country = country;
+    }
+    
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getFirstName() {
@@ -54,12 +66,12 @@ implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmailAddress() {
-        return this.emailAddress;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String emailAddress) {
+        this.email = emailAddress;
     }
 
     public String getAddress1() {

@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 public class DbConnection {
 
     private static String dbURL = "jdbc:mysql://localhost:3306/";
-    private static String schemaName = "";
-    private static String dbUsername = "";
+    private static String schemaName = "miata";
+    private static String dbUsername = "root";
     private static String dbPassword = "";
     private static Connection connection;
 
@@ -23,7 +23,6 @@ public class DbConnection {
         } catch (ClassNotFoundException ex) {
             System.out.println("ERROR: Driver not found");
             connection = null;
-
         } catch (SQLException ex) {
             System.out.println("ERROR: Could not create DB connection");
         }

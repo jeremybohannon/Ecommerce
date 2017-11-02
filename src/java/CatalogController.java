@@ -1,4 +1,4 @@
-package business;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,8 @@ extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Product> products = ProductDB.getProducts();
+        List<Product> products = ProductDB.getAllProducts();
+        
         String productCode = request.getParameter("productCode");
         String category = request.getParameter("catalogCategory");
         if (productCode != null && productCode.matches("^[1-9]\\d*$")) {
@@ -35,6 +36,7 @@ extends HttpServlet {
                 return;
             }
         }
+     
         request.setAttribute("products", products);
         request.setAttribute("category", (Object)category);
         request.getRequestDispatcher("/catalog.jsp").forward((ServletRequest)request, (ServletResponse)response);
