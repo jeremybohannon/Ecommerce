@@ -89,46 +89,18 @@ extends HttpServlet {
                 }
                 case "confirmOrder": {
                     String card = request.getParameter("cards");
-                    int cardNum = Integer.parseInt(request.getParameter("cardNum"));
-                    int month = Integer.parseInt(request.getParameter("month"));
-                    int year = Integer.parseInt(request.getParameter("year"));
-                    int cvv = Integer.parseInt(request.getParameter("cvv"));
+                    String cardNum = request.getParameter("cardNum");
+                    String month = request.getParameter("month");
+                    String year = request.getParameter("year");
+                    String cvv = request.getParameter("cvv");
                     
-                    //Save order details to Order and OrderItem tables
-                    //Add a new order in the Order table
-                    
-                    //Add a new OrderItem for each item in the order with the correspondin number.
-                    
-                    
-                    //Dispatch to the invoice page with “Paid In Full” message and no “Back To Cart”
-                    //or “Purchase” links.
-                    
-                    request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
-                    break;
-                }
-                case "viewOrders": {
-                    User user = (User) session.getAttribute("theUser");
-                    System.out.println("view order");
-                    
-                    if(user != null){
-                        //Retrieve list of orders from DB
-                        
-                        
-                        //Create new Order bean, add to list of orders
-                        
-                        
-                        //Add list to session as 'theOrders'
-                        
-                        
-                        //Dispatch to orderlist
-                        request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
-                    } else {
-                        request.getRequestDispatcher("/catalog.jsp").forward((ServletRequest)request, (ServletResponse)response);
-                    }
-                    break;
+                    System.out.println("Card: " + card);
+                    System.out.println("Cardnum: " + Integer.parseInt(cardNum));
+                    System.out.println("Month: " + Integer.parseInt(month));
+                    System.out.println("Year: " + Integer.parseInt(year));
+                    System.out.println("CVV: " + Integer.parseInt(cvv));
                 }
                 default: {
-                    //TODO Change to admin page
                     request.getRequestDispatcher("/cart.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }

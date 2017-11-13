@@ -68,7 +68,7 @@
                     </div>  
                     <div class="cartAndCheckout">
                         <a href="./cart.jsp" class="button">Back to cart</a>
-                        <a href="./catalog" class="button">Purchase</a>
+                        <a href="./payment.jsp" class="button">Purchase</a>
                     </div> 
                 </form>              
             </main>

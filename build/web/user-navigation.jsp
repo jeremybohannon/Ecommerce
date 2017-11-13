@@ -9,5 +9,6 @@
         </c:if>
         <li><a href="./cart.jsp">My Cart</a></li>
         <li><a href="./catalog">Catalog</a></li>
+        <li><a href="./order?action=viewOrders">My Orders</a></li>
     </ul>
 </nav>

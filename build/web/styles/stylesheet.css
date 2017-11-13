@@ -80,7 +80,7 @@ ul#userList li:after {
 }
 
 ul#userList li:last-child:after { 
-    content: none; 
+    content: none !important; 
 }
 
 #userList li{
