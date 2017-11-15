@@ -74,7 +74,7 @@
                     </c:if>
                     <c:if test="${currentOrder.paid}">
                         <div class="cartAndCheckout">
-                            <span><b>Paid In Full!</br></span>
+                            <span><b>Paid In Full!</b></span>
                         </div> 
                     </c:if>
                 </form>              

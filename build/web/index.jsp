@@ -16,6 +16,7 @@
             <main class="main">
                 <h1 class="mainTitle">Welcome to Mariner Miata!</h1>
                 <p class="mainContent">We have the largest collection of new and used Mazda Miata parts!</p>
+                <li><a href="./admin">Admin Page</a></li>
             </main>
         </div>
         <%@include file="./footer.jsp" %>

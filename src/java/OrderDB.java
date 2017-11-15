@@ -143,5 +143,31 @@ public class OrderDB {
         }
         return orders;
     }
+    
+        public ArrayList<Order> getAllOrders(String userID) {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        Statement statement = DbConnection.getNewStatement();
+        ResultSet resultSet = null;
+        int orderNumber = 0;
+        
+        try {
+            // Find the speciic row in the table
+            resultSet = statement.executeQuery(
+                    "SELECT orderNumber, date, userID, taxRate, totalCost, paid FROM miata.Order WHERE UserID=" + userID + " ORDER BY orderNumber");
+            while (resultSet.next()) {
+                orderNumber = resultSet.getInt("orderNumber");
+                System.out.println("OrderNumber: " + orderNumber);
+                Order temp = getOrder(orderNumber);
+                orders.add(temp);
+                System.out.println("Found order in Order table: " + temp.getOrderNumber());
+            }
+        } catch (SQLException se) {
+            System.out.println("ERROR: Could not exicute SQL statement in: " + "UserDB.getAllUsers()");
+            System.out.println("ERROR: Could not exicute SQL statement: " + se);
+            return null;
+        }
+        return orders;
+    }
 
 }

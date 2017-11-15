@@ -126,7 +126,7 @@ extends HttpServlet {
                     
                     if(user != null){
                         //Retrieve list of orders from DB
-                        ArrayList<Order> orders = orderDB.getAllOrders();
+                        ArrayList<Order> orders = orderDB.getAllOrders(user.getUserID());
                         
                         //Add list to session as 'theOrders'
                         session.setAttribute("theOrders", orders);
@@ -140,7 +140,7 @@ extends HttpServlet {
                 }
                 default: {
                     //TODO Change to admin page
-                    request.getRequestDispatcher("/cart.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    request.getRequestDispatcher("/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }
             }
