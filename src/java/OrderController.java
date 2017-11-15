@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -24,6 +25,8 @@ public class OrderController
 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<Product> products = ProductDB.getAllProducts();
+        OrderDB orderDB = new OrderDB();
+        OrderItemDB orderItemDB = new OrderItemDB();
         
         HttpSession session = request.getSession();
         Cart cart = (Cart)session.getAttribute("theShoppingCart");
@@ -76,6 +79,10 @@ extends HttpServlet {
                     session.setAttribute("theUser", (Object)user);
                     subTotal = items.stream().map(item -> item.product.price * (double)item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
                     Order order = new Order();
+                    
+                    Random rand = new Random();
+                    
+                    order.setOrderNumber(rand.nextInt(299999) + 200000);
                     order.setUser(user);
                     order.setItems(items);
                     order.setTaxRate(0.075);
@@ -83,6 +90,7 @@ extends HttpServlet {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                     LocalDate localDate = LocalDate.now();
                     order.setDate(localDate.toString());
+                    
                     session.setAttribute("currentOrder", (Object)order);
                     request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
@@ -96,13 +104,19 @@ extends HttpServlet {
                     
                     //Save order details to Order and OrderItem tables
                     //Add a new order in the Order table
+                    //Setting order in DB
+                    Order order = (Order) session.getAttribute("currentOrder");
+                    order.setPaid(true);
+                    orderDB.addOrder(order);
                     
-                    //Add a new OrderItem for each item in the order with the correspondin number.
+                    ArrayList<OrderItem> currentItems = order.getItems();
                     
+                    for(OrderItem item: currentItems){
+                        orderItemDB.addOrderItem(item, order.getOrderNumber());
+                    }
                     
                     //Dispatch to the invoice page with “Paid In Full” message and no “Back To Cart”
                     //or “Purchase” links.
-                    
                     request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }
@@ -112,13 +126,10 @@ extends HttpServlet {
                     
                     if(user != null){
                         //Retrieve list of orders from DB
-                        
-                        
-                        //Create new Order bean, add to list of orders
-                        
+                        ArrayList<Order> orders = orderDB.getAllOrders();
                         
                         //Add list to session as 'theOrders'
-                        
+                        session.setAttribute("theOrders", orders);
                         
                         //Dispatch to orderlist
                         request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);

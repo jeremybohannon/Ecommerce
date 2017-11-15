@@ -47,6 +47,12 @@ li {
     text-align: left;
 }
 
+.orderListTable {
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .tablePrice, .tableQuantity {
     text-align: center;
 }

@@ -66,10 +66,17 @@
                             <fmt:formatNumber value = "${currentOrder.totalCost}" type = "currency"/>
                         </span>
                     </div>  
-                    <div class="cartAndCheckout">
-                        <a href="./cart.jsp" class="button">Back to cart</a>
-                        <a href="./payment.jsp" class="button">Purchase</a>
-                    </div> 
+                    <c:if test="${!currentOrder.paid}">
+                        <div class="cartAndCheckout">
+                            <a href="./cart.jsp" class="button">Back to cart</a>
+                            <a href="./payment.jsp" class="button">Purchase</a>
+                        </div> 
+                    </c:if>
+                    <c:if test="${currentOrder.paid}">
+                        <div class="cartAndCheckout">
+                            <span><b>Paid In Full!</br></span>
+                        </div> 
+                    </c:if>
                 </form>              
             </main>
         </div>

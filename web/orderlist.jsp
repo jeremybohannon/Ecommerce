@@ -22,14 +22,24 @@
                 <div class="cartHeader">
                     <h1 class="mainTitle">Orders List</h1>
                 </div>
-                <table class="cartTable">
+                <table class="cartTable orderListTable">
                     <tr>
                        <th>Order Number</th>
                        <th>Customer</th> 
                        <th>Order Date</th>
                        <th>Total</th>
                     </tr>
-                    
+                    <c:forEach items="${theOrders}" var="order">
+                          <tr>
+                              <td>${order.orderNumber}</td>
+                              <td>${order.user.firstName} ${order.user.lastName}</td>
+                              <td>${order.date}</td>
+                              <td>
+                              <fmt:setLocale value = "en_US"/>
+                              <fmt:formatNumber value = "${order.totalCost}" type = "currency"/>
+                              </td>
+                          </tr>
+                      </c:forEach>
                 </table>
             </main>
         </div>
