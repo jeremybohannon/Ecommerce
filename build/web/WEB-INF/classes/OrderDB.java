@@ -85,15 +85,16 @@ public class OrderDB {
         String taxRate = "";
         String totalCost = "";
         String isPaid = "";
+        User user;
 
         String query = "";
         try {
             // Find the speciic row in the table
-            query = "SELECT orderNumber, date, userID, taxRate, totalCost, paid FROM miata.Order WHERE orderNumber ='" + userID + "' ORDER BY orderNumber";
+            query = "SELECT orderNumber, date, userID, taxRate, totalCost, paid FROM miata.Order WHERE orderNumber ='" + orderID + "' ORDER BY orderNumber";
 
             resultSet = statement.executeQuery(query);
             if (!resultSet.next()) {
-                System.out.println("WARNING: Could not find user in USER table: " + userID);
+                System.out.println("WARNING: Could not find user in USER table: " + orderID);
                 return null;
             } else {
                 orderNumber = resultSet.getInt("orderNumber");
@@ -102,6 +103,9 @@ public class OrderDB {
                 taxRate = resultSet.getString("taxRate");
                 totalCost = resultSet.getString("totalCost");
                 isPaid = resultSet.getString("paid");
+                
+                user = UserDB.getUser(userID);
+                
 
                 System.out.println("Found user in user table: " + userID);
             }
@@ -111,7 +115,7 @@ public class OrderDB {
             return null;
         }
         
-        return new Order(orderNumber, date, taxRate, totalCost, isPaid);
+        return new Order(orderNumber, date, taxRate, totalCost, isPaid, user);
     }
 
     public ArrayList<Order> getAllOrders() {
@@ -127,9 +131,36 @@ public class OrderDB {
                     "SELECT orderNumber, date, userID, taxRate, totalCost, paid FROM miata.Order ORDER BY orderNumber");
             while (resultSet.next()) {
                 orderNumber = resultSet.getInt("orderNumber");
+                System.out.println("OrderNumber: " + orderNumber);
                 Order temp = getOrder(orderNumber);
                 orders.add(temp);
-                System.out.println("Found user in USER table: " + temp.getOrderNumber());
+                System.out.println("Found order in Order table: " + temp.getOrderNumber());
+            }
+        } catch (SQLException se) {
+            System.out.println("ERROR: Could not exicute SQL statement in: " + "UserDB.getAllUsers()");
+            System.out.println("ERROR: Could not exicute SQL statement: " + se);
+            return null;
+        }
+        return orders;
+    }
+    
+        public ArrayList<Order> getAllOrders(String userID) {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        Statement statement = DbConnection.getNewStatement();
+        ResultSet resultSet = null;
+        int orderNumber = 0;
+        
+        try {
+            // Find the speciic row in the table
+            resultSet = statement.executeQuery(
+                    "SELECT orderNumber, date, userID, taxRate, totalCost, paid FROM miata.Order WHERE UserID=" + userID + " ORDER BY orderNumber");
+            while (resultSet.next()) {
+                orderNumber = resultSet.getInt("orderNumber");
+                System.out.println("OrderNumber: " + orderNumber);
+                Order temp = getOrder(orderNumber);
+                orders.add(temp);
+                System.out.println("Found order in Order table: " + temp.getOrderNumber());
             }
         } catch (SQLException se) {
             System.out.println("ERROR: Could not exicute SQL statement in: " + "UserDB.getAllUsers()");

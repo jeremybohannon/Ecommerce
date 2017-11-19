@@ -91,15 +91,6 @@ extends HttpServlet {
                     LocalDate localDate = LocalDate.now();
                     order.setDate(localDate.toString());
                     
-                    //Setting order in DB
-                    orderDB.addOrder(order);
-                    
-                    ArrayList<OrderItem> currentItems = order.getItems();
-                    
-                    for(OrderItem item: currentItems){
-                        orderItemDB.addOrderItem(item, order.getOrderNumber());
-                    }
-                    
                     session.setAttribute("currentOrder", (Object)order);
                     request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
@@ -113,13 +104,19 @@ extends HttpServlet {
                     
                     //Save order details to Order and OrderItem tables
                     //Add a new order in the Order table
+                    //Setting order in DB
+                    Order order = (Order) session.getAttribute("currentOrder");
+                    order.setPaid(true);
+                    orderDB.addOrder(order);
                     
-                    //Add a new OrderItem for each item in the order with the correspondin number.
+                    ArrayList<OrderItem> currentItems = order.getItems();
                     
+                    for(OrderItem item: currentItems){
+                        orderItemDB.addOrderItem(item, order.getOrderNumber());
+                    }
                     
                     //Dispatch to the invoice page with “Paid In Full” message and no “Back To Cart”
                     //or “Purchase” links.
-                    
                     request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }
@@ -129,7 +126,7 @@ extends HttpServlet {
                     
                     if(user != null){
                         //Retrieve list of orders from DB
-                        ArrayList<Order> orders = orderDB.getAllOrders();
+                        ArrayList<Order> orders = orderDB.getAllOrders(user.getUserID());
                         
                         //Add list to session as 'theOrders'
                         session.setAttribute("theOrders", orders);
@@ -143,7 +140,7 @@ extends HttpServlet {
                 }
                 default: {
                     //TODO Change to admin page
-                    request.getRequestDispatcher("/cart.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    request.getRequestDispatcher("/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }
             }

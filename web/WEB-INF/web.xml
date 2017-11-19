@@ -16,4 +16,27 @@
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
     </servlet-mapping>
+    
+    <security-role>
+        <description>system administrators</description>
+        <role-name>programmer</role-name>
+    </security-role>
+
+    <security-constraint>
+        <!-- Restrict access to all files in the /admin folder -->
+        <web-resource-collection>
+            <web-resource-name>Protected Area</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        
+        <!-- Authorize the programmer and service roles -->
+        <auth-constraint>
+            <role-name>programmer</role-name>
+        </auth-constraint>
+        
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Admin Login</realm-name>
+    </login-config>
 </web-app>
