@@ -33,6 +33,7 @@ extends HttpServlet {
         if (cart == null) {
             cart = new Cart();
             session.setAttribute("theShoppingCart", (Object)cart);
+            session.setAttribute("subTotal", null);
         }
         ArrayList<OrderItem> items = cart.getItems();
         double subTotal = 0.0;
@@ -117,6 +118,7 @@ extends HttpServlet {
                     
                     //Dispatch to the invoice page with “Paid In Full” message and no “Back To Cart”
                     //or “Purchase” links.
+                    session.setAttribute("theShoppingCart", null);
                     request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
                 }

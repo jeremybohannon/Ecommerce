@@ -64,6 +64,25 @@ CREATE TABLE `Order` (
 );
 
 
+-- ----------------------------
+--  Table structure for `UserRole`
+-- ----------------------------
+
+CREATE TABLE `UserRole` (
+  `Username` varchar(50),
+  `Rolename` varchar(50) 
+);
+
+-- ----------------------------
+--  Table structure for `UserPass`
+-- ----------------------------
+
+CREATE TABLE `UserPass` (
+  `Username` varchar(50),
+  `Password` varchar(50) 
+);
+
+
 
 -- ----------------------------
 --  Insert Values
@@ -82,3 +101,13 @@ VALUES
 ("5", "Soft Top", "internals", "NA Black Convertible Boot Cover fits '90-'97 Miata. In good condition. Sample Picture, actual pictures will be sent on request", 90.99, "./resources/top.jpg"),
 ("6", "Dash Trim Panel", "internals", "Set of A Pillar Trim pieces. Includes both left and right side.", 15.0, "./resources/dash.jpg"),
 ("7", "AC Blower", "internals", "Set of A Pillar Trim pieces. Includes both left and right side.", 23.0, "./resources/ac.jpg");
+
+
+INSERT INTO UserRole (Username, Rolename)
+VALUES ("joel", "programmer"), ("andrea", "server");
+
+INSERT INTO UserPass (Username, Password)
+VALUES ("joel", "sesame"), ("andrea", "sesame");
+
+INSERT INTO miata.Order (OrderNumber, Date, UserID, TaxRate, TotalCost, Paid)
+VALUES(42, "2017-11-19", "2", ".07", "123.45", "true");
