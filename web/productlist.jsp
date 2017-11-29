@@ -13,7 +13,7 @@
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
     </head>
     <body>
-        <% String breadcrumb = "Home ";%>
+        <% String breadcrumb = "Home > Productlist ";%>
         <%@include file="./header.jsp" %>
         <%@include file="./user-navigation.jsp" %>      
         <div class="content">
