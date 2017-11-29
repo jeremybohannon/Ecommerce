@@ -17,7 +17,7 @@ public class DbSetup {
 
         User testUser = new User("userID", "firstName", "lastName", "email",
                 "address1", "address2", "city", "state",
-                "zipcode", "country");
+                "zipcode", "country", "123");
         uDB.addUser(testUser);
 
     }

@@ -31,7 +31,12 @@
                     </tr>
                     <c:forEach items="${theOrders}" var="order">
                           <tr>
-                              <td>${order.orderNumber}</td>
+                              <c:if test="${admin}">
+                                  <td><a href="./admin?action=orderNum&orderNum=${order.orderNumber}&userID=${order.user.userID}">${order.orderNumber}</a></td>
+                              </c:if>
+                              <c:if test="${!admin}">
+                                  <td>${order.orderNumber}</a</td>
+                              </c:if>
                               <td>${order.user.firstName} ${order.user.lastName}</td>
                               <td>${order.date}</td>
                               <td>

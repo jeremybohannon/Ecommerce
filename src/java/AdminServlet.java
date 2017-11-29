@@ -34,17 +34,79 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         String actionValue = request.getParameter("action");
         
-        if(actionValue != null && actionValue.equals("viewOrders")){
-            OrderDB orderDB = new OrderDB();
-            HttpSession session = request.getSession();
-            
-            //Retrieve list of orders from DB
-            ArrayList<Order> orders = orderDB.getAllOrders();
-
-            //Add list to session as 'theOrders'
-            session.setAttribute("theOrders", orders);
-            
-            request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+        if(actionValue != null){
+            switch (actionValue) {
+                case "viewOrders":
+                    {
+                        OrderDB orderDB = new OrderDB();
+                        HttpSession session = request.getSession();
+                        //Retrieve list of orders from DB
+                        ArrayList<Order> orders = orderDB.getAllOrders();
+                        //Add list to session as 'theOrders'
+                        session.setAttribute("theOrders", orders);
+                        request.setAttribute("admin", true);
+                        request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                case "viewProducts":
+                    break;
+                case "viewUsers":
+                    {
+                        HttpSession session = request.getSession();
+                        ArrayList<User> users = new ArrayList<>();
+                        UserDB userDB = new UserDB();
+                        users = userDB.getAllUsers();
+                        session.setAttribute("users", users);
+                        request.getRequestDispatcher("/userlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                case "viewProfile":
+                    {
+                        String email = request.getParameter("email");
+                        User user = UserDB.getUserByEmail(email);
+                        request.setAttribute("theUser", (Object)user);
+                        request.getRequestDispatcher("/profile.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                case "orderNum":
+                    {
+                        String orderNum = request.getParameter("orderNum");
+                        String userID = request.getParameter("userID");
+                        User user = (User) UserDB.getUser(userID);
+                        ArrayList<OrderItem> orders = (ArrayList<OrderItem>) OrderItemDB.getAllOrders(Integer.parseInt(orderNum));
+                        Order order = (Order) OrderDB.getOrder(Integer.parseInt(orderNum));
+                        order.setItems(orders);
+                        request.setAttribute("theUser", user);
+                        request.setAttribute("currentOrder", order);
+                        request.setAttribute("admin", true);
+                        request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                case "updateOrder":
+                    {
+                        String[] productList = request.getParameterValues("productList[]");
+                        if (productList == null) {
+                            productList = new String[]{};
+                        }   double totalCost = 0.0;
+                        String orderNum = request.getParameter("orderNum");
+                        for (String currentProduct : productList) {
+                            if (currentProduct == null || !currentProduct.matches("^[1-9]\\d*$")) continue;
+                            
+                            String tempQuantity = request.getParameter(currentProduct);
+                            
+                            OrderItemDB.updateOrderItem(Integer.parseInt(orderNum), currentProduct, tempQuantity);
+                            
+                            Product product = ProductDB.getProduct(currentProduct);
+                            
+                            totalCost += product.getPrice() * Integer.parseInt(tempQuantity);
+                        }   OrderDB.updateOrderTotal(Integer.parseInt(orderNum), totalCost);
+                        request.getRequestDispatcher("/admin?action=viewOrders").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                default:
+                    request.getRequestDispatcher("/admin/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    break;
+            }
         } else {
             request.getRequestDispatcher("/admin/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
         }

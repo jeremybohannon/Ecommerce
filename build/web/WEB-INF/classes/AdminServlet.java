@@ -34,17 +34,59 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         String actionValue = request.getParameter("action");
         
-        if(actionValue != null && actionValue.equals("viewOrders")){
-            OrderDB orderDB = new OrderDB();
-            HttpSession session = request.getSession();
-            
-            //Retrieve list of orders from DB
-            ArrayList<Order> orders = orderDB.getAllOrders();
+        if(actionValue != null){
+            if(actionValue.equals("viewOrders")) {
+                OrderDB orderDB = new OrderDB();
+                HttpSession session = request.getSession();
 
-            //Add list to session as 'theOrders'
-            session.setAttribute("theOrders", orders);
+                //Retrieve list of orders from DB
+                ArrayList<Order> orders = orderDB.getAllOrders();
+
+                //Add list to session as 'theOrders'
+                session.setAttribute("theOrders", orders);
+                request.setAttribute("admin", true);
+                request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+            } else if (actionValue.equals("viewProducts")) {
+                
+            } else if (actionValue.equals("viewUsers")) {
+                
+            } else if (actionValue.equals("orderNum")){
+                String orderNum = request.getParameter("orderNum");
+                String userID = request.getParameter("userID");
+                
+                User user = (User) UserDB.getUser(userID);
+                
+                ArrayList<OrderItem> orders = (ArrayList<OrderItem>) OrderItemDB.getAllOrders(Integer.parseInt(orderNum));
+                Order order = (Order) OrderDB.getOrder(Integer.parseInt(orderNum));
+                order.setItems(orders);
+                request.setAttribute("theUser", user);
+                request.setAttribute("currentOrder", order);
+                request.setAttribute("admin", true);
+                
+                request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
             
-            request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                
+            } else if (actionValue.equals("updateOrder")) {
+                
+                System.out.println("\n\n\n\n UPDATE ORDER");
+                
+                String[] productList = request.getParameterValues("productList[]");
+                    if (productList == null) {
+                        productList = new String[]{};
+                    }
+                    for (String currentProduct : productList) {
+                        if (currentProduct == null || !currentProduct.matches("^[1-9]\\d*$")) continue;
+                        
+                        
+                        String tempQuantity = request.getParameter(currentProduct);
+                        String orderNum = request.getParameter("orderNum");
+                        
+                        OrderItemDB.updateOrderItem(Integer.parseInt(orderNum), currentProduct, tempQuantity);
+                        System.out.println("\n\n\n" + currentProduct + " quan: " + tempQuantity + "ordernum: " + orderNum);
+                        
+                        request.getRequestDispatcher("/admin/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    }
+            }
         } else {
             request.getRequestDispatcher("/admin/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
         }

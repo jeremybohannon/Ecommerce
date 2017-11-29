@@ -23,7 +23,9 @@
                     <h1 class="mainTitle">Admin Page</h1>
                 </div>
                 <div class="cartHeader">
+                    <a href="admin?action=viewProducts" class="button">Display Products</a>
                     <a href="admin?action=viewOrders" class="button">Display Orders</a>
+                    <a href="admin?action=viewUsers" class="button">Display Users</a>
                 </div>
             </main>
         </div>

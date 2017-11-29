@@ -76,8 +76,14 @@ extends HttpServlet {
                     break;
                 }
                 case "checkout": {
-                    User user = (User)UserDB.getUser("1");
-                    session.setAttribute("theUser", (Object)user);
+                   User user;
+                   user = (User) session.getAttribute("theUser");
+                   
+                   if(user == null){
+                       user = (User)UserDB.getUser("1");
+                        session.setAttribute("theUser", (Object)user);
+                   }
+                    
                     subTotal = items.stream().map(item -> item.product.price * (double)item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
                     Order order = new Order();
                     

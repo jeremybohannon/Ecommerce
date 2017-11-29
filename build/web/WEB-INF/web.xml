@@ -8,6 +8,10 @@
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>AdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SignInController</servlet-name>
+        <servlet-class>SignInController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OrderController</servlet-name>
         <url-pattern>/order</url-pattern>
@@ -16,24 +20,24 @@
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
     </servlet-mapping>
-    
     <security-role>
         <description>system administrators</description>
         <role-name>programmer</role-name>
     </security-role>
-
+    <servlet-mapping>
+        <servlet-name>SignInController</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
     <security-constraint>
         <!-- Restrict access to all files in the /admin folder -->
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
-        
         <!-- Authorize the programmer and service roles -->
         <auth-constraint>
             <role-name>programmer</role-name>
         </auth-constraint>
-        
     </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>

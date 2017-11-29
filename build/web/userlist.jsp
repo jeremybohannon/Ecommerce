@@ -20,29 +20,21 @@
             <%@include file="./site-navigation.jsp" %>
             <main class="main">
                 <div class="cartHeader">
-                    <h1 class="mainTitle">Orders List</h1>
+                    <h1 class="mainTitle">Users List</h1>
                 </div>
                 <table class="cartTable orderListTable">
                     <tr>
-                       <th>Order Number</th>
-                       <th>Customer</th> 
-                       <th>Order Date</th>
-                       <th>Total</th>
+                       <th>User ID</th>
+                       <th>First Name</th> 
+                       <th>Last Name</th>
+                       <th>Email</th>
                     </tr>
-                    <c:forEach items="${theOrders}" var="order">
+                    <c:forEach items="${users}" var="user">
                           <tr>
-                              <c:if test="${admin}">
-                                  <td><a href="./admin?action=orderNum&orderNum=${order.orderNumber}&userID=${order.user.userID}">${order.orderNumber}</a></td>
-                              </c:if>
-                              <c:if test="${!admin}">
-                                  <td>${order.orderNumber}</a</td>
-                              </c:if>
-                              <td>${order.user.firstName} ${order.user.lastName}</td>
-                              <td>${order.date}</td>
-                              <td>
-                              <fmt:setLocale value = "en_US"/>
-                              <fmt:formatNumber value = "${order.totalCost}" type = "currency"/>
-                              </td>
+                              <td><a href="./admin?action=viewProfile&email=${user.email}">${user.userID}</a></td>
+                              <td>${user.firstName}</td>
+                              <td>${user.lastName}</td>
+                              <td>${user.email}</td>
                           </tr>
                       </c:forEach>
                 </table>

@@ -19,6 +19,7 @@ CREATE TABLE `User` (
   `State` varchar(50) DEFAULT NULL,
   `Postal_Code` int(11) DEFAULT NULL,
   `Country` varchar(50) DEFAULT NULL,
+  `Password` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`UserID`)
 );
 
@@ -87,9 +88,9 @@ CREATE TABLE `UserPass` (
 -- ----------------------------
 --  Insert Values
 -- ----------------------------
-INSERT INTO User (UserID, LastName, FirstName, Email, Address_1, Address_2, City, State, Postal_Code, Country) 
-VALUES (1, "Doe", "John", "johndoe@email.com", "9201 University City Blvd", "Bio Inf 112", "Charlotte", "NC", 28223, "USA"),
-(2, "Doe", "Jane", "janedoe@email.com", "9201 University City Blvd", "Bio Inf 113", "Charlotte", "NC", 28223, "USA");
+INSERT INTO User (UserID, LastName, FirstName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password) 
+VALUES (1, "Doe", "John", "johndoe@email.com", "9201 University City Blvd", "Bio Inf 112", "Charlotte", "NC", 28223, "USA", "123"),
+(2, "Doe", "Jane", "janedoe@email.com", "9201 University City Blvd", "Bio Inf 113", "Charlotte", "NC", 28223, "USA", "123");
 
 
 INSERT INTO Product (ProductCode, Name, CatelogCategory, Description, Price, ImageURL)

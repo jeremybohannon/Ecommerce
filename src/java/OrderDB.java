@@ -169,5 +169,32 @@ public class OrderDB {
         }
         return orders;
     }
+        
+        public static boolean updateOrderTotal(int OrderNumber, double totalCost){
+        Connection connection = DbConnection.getConnection();
+        PreparedStatement ps;
+        // insert the new row into the table
+        try {
+            ps = connection.prepareStatement("UPDATE miata.Order SET TotalCost=? WHERE OrderNumber=?");
+            
+            ps.setString(1, totalCost+"");
+            ps.setInt(2, OrderNumber);
+
+            ps.executeUpdate();
+
+        } catch (SQLException se) {
+            if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
+                System.out.println("ERROR: Could not insert record into USER; dup primary key: " + OrderNumber);
+            } else {
+                System.out.println("ERROR: Could not update row to ORDERITEM table: " + OrderNumber + " " + se);
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+            return false;
+        }
+
+        return true;
+    }
 
 }

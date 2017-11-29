@@ -27,9 +27,10 @@ implements Serializable {
         this.state = "";
         this.postalCode = "";
         this.country = "";
+        this.password = "";
     }
 
-    public User(String userID, String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country) {
+    public User(String userID, String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country, String password) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,6 +41,7 @@ implements Serializable {
         this.state = state;
         this.postalCode = postalCode;
         this.country = country;
+        this.password = password;
     }
     
     public String getUserID() {
@@ -121,4 +123,13 @@ implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
 }

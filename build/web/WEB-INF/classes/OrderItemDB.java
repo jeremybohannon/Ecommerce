@@ -47,7 +47,7 @@ public class OrderItemDB {
         String query = "";
         try {
             // Find the speciic row in the table
-            query = "SELECT orderNumber, productCode, quantity FROM miata.OrderItem WHERE orderNumber ='" + orderID + "' ORDER BY orderNumber";
+            query = "SELECT orderNumber, productCode, quantity FROM miata.OrderItem WHERE OrderNumber ='" + orderID + "' ORDER BY orderNumber";
 
             resultSet = statement.executeQuery(query);
             if (!resultSet.next()) {
@@ -67,6 +67,35 @@ public class OrderItemDB {
         }
         
         return new OrderItem(ProductDB.getProduct(productCode), Integer.parseInt(quantity));
+    }
+    
+    public static ArrayList<OrderItem> getAllOrders(int orderID) {
+        ArrayList<OrderItem> orders = new ArrayList<>();
+
+        Statement statement = DbConnection.getNewStatement();
+        ResultSet resultSet = null;
+        String quantity, productCode = "";
+        
+        try {
+            // Find the speciic row in the table
+            resultSet = statement.executeQuery(
+                    "SELECT orderNumber, productCode, quantity FROM miata.OrderItem WHERE OrderNumber ="+orderID+" ORDER BY orderNumber");
+            while (resultSet.next()) {
+                productCode = resultSet.getString("productCode");
+                quantity = resultSet.getString("quantity");
+                
+                Product product = ProductDB.getProduct(productCode);
+                
+                OrderItem temp = new OrderItem(product, Integer.parseInt(quantity));
+                
+                orders.add(temp);
+            }
+        } catch (SQLException se) {
+            System.out.println("ERROR: Could not exicute SQL statement in: " + "UserDB.getAllUsers()");
+            System.out.println("ERROR: Could not exicute SQL statement: " + se);
+            return null;
+        }
+        return orders;
     }
 
     public ArrayList<Order> getAllOrders() {
@@ -92,6 +121,34 @@ public class OrderItemDB {
             return null;
         }
         return orders;
+    }
+    
+    public static boolean updateOrderItem(int OrderNumber, String productCode, String quantity){
+        Connection connection = DbConnection.getConnection();
+        PreparedStatement ps;
+        // insert the new row into the table
+        try {
+            ps = connection.prepareStatement("UPDATE miata.OrderItem SET Quantity=? WHERE OrderNumber=? AND ProductCode=?");
+            
+            ps.setString(1, quantity);
+            ps.setInt(2, OrderNumber);
+            ps.setString(3, productCode);
+
+            ps.executeUpdate();
+
+        } catch (SQLException se) {
+            if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
+                System.out.println("ERROR: Could not insert record into USER; dup primary key: " + OrderNumber);
+            } else {
+                System.out.println("ERROR: Could not update row to ORDERITEM table: " + OrderNumber + " " + se);
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+            return false;
+        }
+
+        return true;
     }
 
 }
