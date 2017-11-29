@@ -7,6 +7,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -49,7 +50,75 @@ public class AdminServlet extends HttpServlet {
                         break;
                     }
                 case "viewProducts":
+                {
+                    HttpSession session = request.getSession();
+                    ArrayList<Product> products = new ArrayList<>();
+                    ProductDB productDB = new ProductDB();
+                    products = productDB.getAllProducts();
+                    session.setAttribute("products", products);
+                    request.getRequestDispatcher("/productlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
                     break;
+                }
+                case "viewProduct":
+                    {
+                        String productCode = request.getParameter("productCode");
+                        Product product = ProductDB.getProduct(productCode);
+                        request.setAttribute("product", (Object)product);
+                        request.getRequestDispatcher("/product.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        break;
+                    }
+                case "updateProduct":
+                {
+                    String productCode = request.getParameter("productCode");
+                    String name = request.getParameter("productName");
+                    String catagory = request.getParameter("catagory");
+                    String description = request.getParameter("description");
+                    double price = Double.parseDouble(request.getParameter("price"));
+                    String imageURL = request.getParameter("imageURL");
+                    
+                    Product product = new Product(productCode, name, catagory, description, price, imageURL);
+                    
+                    ProductDB.updateProduct(product);
+                    
+                    request.getRequestDispatcher("/admin?action=viewProducts").forward((ServletRequest)request, (ServletResponse)response);
+
+                    break;
+                }
+                case "deleteProduct":
+                {
+                    String productCode = request.getParameter("productCode");
+                    
+                    ProductDB.deleteProduct(Integer.parseInt(productCode));
+                    
+                    request.getRequestDispatcher("/admin?action=viewProducts").forward((ServletRequest)request, (ServletResponse)response);
+
+                    break;
+                }
+                case "addProduct":
+                {
+                    String blank = request.getParameter("blank");
+                    if(blank != null && blank.equals("true")){
+                        request.setAttribute("blank", true);
+                        request.getRequestDispatcher("./product.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    } else {
+                        Random rand = new Random();
+                        int productCode = rand.nextInt(599999) + 500000;
+                        String name = request.getParameter("productName");
+                        String catagory = request.getParameter("catagory");
+                        String description = request.getParameter("description");
+                        double price = Double.parseDouble(request.getParameter("price"));
+                        String imageURL = request.getParameter("imageURL");
+                        
+                        Product product = new Product(productCode+"", name, catagory, description, price, imageURL);
+                    
+                        ProductDB productDB = new ProductDB();
+                        productDB.addProduct(product);
+                        
+                        request.getRequestDispatcher("/admin?action=viewProducts").forward((ServletRequest)request, (ServletResponse)response);
+                    }
+                    
+                    break;
+                }
                 case "viewUsers":
                     {
                         HttpSession session = request.getSession();

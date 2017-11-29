@@ -80,7 +80,7 @@ extends HttpServlet {
                    user = (User) session.getAttribute("theUser");
                    
                    if(user == null){
-                       user = (User)UserDB.getUser("1");
+                       user = (User)UserDB.getUser("-1");
                         session.setAttribute("theUser", (Object)user);
                    }
                     

@@ -89,7 +89,9 @@ CREATE TABLE `UserPass` (
 --  Insert Values
 -- ----------------------------
 INSERT INTO User (UserID, LastName, FirstName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password) 
-VALUES (1, "Doe", "John", "johndoe@email.com", "9201 University City Blvd", "Bio Inf 112", "Charlotte", "NC", 28223, "USA", "123"),
+VALUES 
+(-1, "Account", "Guest", "guest@email.com", "Miata.com", "", "Miata.com", "XX", 404, "Miata", "123"),
+(1, "Doe", "John", "johndoe@email.com", "9201 University City Blvd", "Bio Inf 112", "Charlotte", "NC", 28223, "USA", "123"),
 (2, "Doe", "Jane", "janedoe@email.com", "9201 University City Blvd", "Bio Inf 113", "Charlotte", "NC", 28223, "USA", "123");
 
 

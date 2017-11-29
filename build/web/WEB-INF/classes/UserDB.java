@@ -253,6 +253,7 @@ public class UserDB {
     }
 
     public boolean updateUser(User user) {
+        System.out.println("\n\n[WARN]\n\n UPDATING USER: " + user.getUserID());
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
@@ -290,4 +291,5 @@ public class UserDB {
         // return the  User object
         return true;
     }
+
 }

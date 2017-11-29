@@ -75,13 +75,13 @@ public class ProductDB {
         PreparedStatement ps;
         // insert the new row into the table
         try {
-            ps = connection.prepareStatement("INSERT INTO product VALUES (?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, product.getProductCode());
+            ps = connection.prepareStatement("INSERT INTO miata.Product VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setInt(1, Integer.parseInt(product.getProductCode()));
             ps.setString(2, product.getProductName());
             ps.setString(3, product.getCategory());
+            ps.setString(4, product.getDescription());
             ps.setDouble(5, product.getPrice());
-            ps.setString(6, product.getDescription());
-            ps.setString(7, product.getImageURL());
+            ps.setString(6, product.getImageURL());
 
             ps.executeUpdate();
 
@@ -166,5 +166,62 @@ public class ProductDB {
 
         return products;
     }
+    
+    public static boolean updateProduct(Product product){
+        Connection connection = DbConnection.getConnection();
+        PreparedStatement ps;
+        // insert the new row into the table
+        try {
+            ps = connection.prepareStatement("UPDATE miata.Product SET Name=?, CatelogCategory=?, Description=?, Price=?, ImageURL=? WHERE ProductCode=?");
+            
+            ps.setString(1, product.getProductName());
+            ps.setString(2, product.getCategory());
+            ps.setString(3, product.getDescription());
+            ps.setDouble(4, product.getPrice());
+            ps.setString(5, product.getImageURL());
+            ps.setInt(6, Integer.parseInt(product.getProductCode()));
+
+            
+            ps.executeUpdate();
+
+        } catch (SQLException se) {
+            if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
+                System.out.println("ERROR: Could not insert record into USER; dup primary key: " + product.getProductCode());
+            } else {
+                System.out.println("ERROR: Could not update row to ORDERITEM table: " + product.getProductCode() + " " + se);
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean deleteProduct(int productCode){
+        Connection connection = DbConnection.getConnection();
+        PreparedStatement ps;
+        // insert the new row into the table
+        try {
+            ps = connection.prepareStatement("DELETE FROM miata.Product WHERE ProductCode=?");
+            
+            ps.setInt(1, productCode);
+            
+            ps.executeUpdate();
+
+        } catch (SQLException se) {
+            if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
+                System.out.println("ERROR: Could not insert record into USER; dup primary key: " + productCode);
+            } else {
+                System.out.println("ERROR: Could not update row to ORDERITEM table: " + productCode + " " + se);
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+            return false;
+        }
+        return true;
+    }
+    
 
 }
