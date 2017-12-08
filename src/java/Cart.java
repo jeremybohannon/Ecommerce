@@ -8,8 +8,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cart
-implements Serializable {
+public class Cart implements Serializable {
     ArrayList<OrderItem> items;
 
     public Cart() {

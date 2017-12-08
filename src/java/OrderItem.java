@@ -8,7 +8,7 @@
 import java.io.Serializable;
 
 public class OrderItem
-implements Serializable {
+        implements Serializable {
     Product product;
     int quantity;
 
@@ -39,6 +39,6 @@ implements Serializable {
     }
 
     public double getTotal() {
-        return this.product.getPrice() * (double)this.quantity;
+        return this.product.getPrice() * (double) this.quantity;
     }
 }

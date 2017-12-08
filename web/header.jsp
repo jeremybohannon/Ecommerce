@@ -11,6 +11,7 @@
         <img id="logo" src="./resources/logo.png" alt="logo"/>
     </div>
     <div id="breadCrumb">
-        <a href="./index.jsp"><%=breadcrumb%></a>
+        <a href="./index.jsp"><%=breadcrumb%>
+        </a>
     </div>
 </header>

@@ -2,7 +2,7 @@
 <nav class="userNav">
     <ul id="userList">
         <c:if test="${theUser != null}">
-            <li><a href="./profile.jsp">${theUser.firstName} ${theUser.lastName}</a></li>
+            <li><a href="./profile.jsp"><c:out value="${theUser.firstName}"/> <c:out value="${theUser.lastName}"/></a></li>
         </c:if>
         <c:if test="${theUser == null}">
             <li><a href="./signin.jsp">Sign In</a></li>

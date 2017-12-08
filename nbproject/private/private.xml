@@ -3,12 +3,29 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/OrderItemDB.java</file>
-            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/UserDB.java</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/forgotPass.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/productlist.jsp</file>
             <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/AdminServlet.java</file>
             <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/orderlist.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/site-navigation.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/profile.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/footer.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/userlist.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/product.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/signup.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/OrderController.java</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/signin.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/header.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/contact.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/index.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/catalog.jsp</file>
             <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/order.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/ProductDB.java</file>
             <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/cart.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/item.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/payment.jsp</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/src/java/SignInController.java</file>
+            <file>file:/Users/jeremybohannon/NetBeansProjects/Ecommerce/web/about.jsp</file>
         </group>
     </open-files>
 </project-private>

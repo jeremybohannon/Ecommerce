@@ -20,19 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(urlPatterns={"/order"})
+@WebServlet(urlPatterns = {"/order"})
 public class OrderController
-extends HttpServlet {
+        extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<Product> products = ProductDB.getAllProducts();
         OrderDB orderDB = new OrderDB();
         OrderItemDB orderItemDB = new OrderItemDB();
-        
+
         HttpSession session = request.getSession();
-        Cart cart = (Cart)session.getAttribute("theShoppingCart");
+        Cart cart = (Cart) session.getAttribute("theShoppingCart");
         if (cart == null) {
             cart = new Cart();
-            session.setAttribute("theShoppingCart", (Object)cart);
+            session.setAttribute("theShoppingCart", (Object) cart);
             session.setAttribute("subTotal", null);
         }
         ArrayList<OrderItem> items = cart.getItems();
@@ -49,8 +49,8 @@ extends HttpServlet {
                         if (currentProduct == null || !currentProduct.matches("^[1-9]\\d*$")) continue;
                         OrderItem currentItem = cart.getOrderItemByCode(currentProduct);
                         if (currentItem == null) {
-                            Product tmp = ProductDB.getProduct((String)currentProduct);
-                            cart.addItem(ProductDB.getProduct((String)currentProduct), 0);
+                            Product tmp = ProductDB.getProduct((String) currentProduct);
+                            cart.addItem(ProductDB.getProduct((String) currentProduct), 0);
                             currentItem = cart.getOrderItemByCode(currentProduct);
                         }
                         int quantity = 1;
@@ -64,31 +64,30 @@ extends HttpServlet {
                                 quantity = Integer.parseInt(tempQuantity);
                             }
                             currentItem.setQuantity(quantity);
-                        }
-                        catch (NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             System.out.println(e);
                         }
                     }
-                    session.setAttribute("theShoppingCart", (Object)cart);
-                    subTotal = items.stream().map(item -> item.product.price * (double)item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
-                    session.setAttribute("subTotal", (Object)subTotal);
-                    request.getRequestDispatcher("/cart.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    session.setAttribute("theShoppingCart", (Object) cart);
+                    subTotal = items.stream().map(item -> item.product.price * (double) item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
+                    session.setAttribute("subTotal", (Object) subTotal);
+                    request.getRequestDispatcher("/cart.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     break;
                 }
                 case "checkout": {
-                   User user;
-                   user = (User) session.getAttribute("theUser");
-                   
-                   if(user == null){
-                       user = (User)UserDB.getUser("-1");
-                        session.setAttribute("theUser", (Object)user);
-                   }
-                    
-                    subTotal = items.stream().map(item -> item.product.price * (double)item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
+                    User user;
+                    user = (User) session.getAttribute("theUser");
+
+                    if (user == null) {
+                        user = (User) UserDB.getUser("-1");
+                        session.setAttribute("theUser", (Object) user);
+                    }
+
+                    subTotal = items.stream().map(item -> item.product.price * (double) item.quantity).reduce(subTotal, (accumulator, _item) -> accumulator + _item);
                     Order order = new Order();
-                    
+
                     Random rand = new Random();
-                    
+
                     order.setOrderNumber(rand.nextInt(299999) + 200000);
                     order.setUser(user);
                     order.setItems(items);
@@ -97,9 +96,9 @@ extends HttpServlet {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                     LocalDate localDate = LocalDate.now();
                     order.setDate(localDate.toString());
-                    
-                    session.setAttribute("currentOrder", (Object)order);
-                    request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
+
+                    session.setAttribute("currentOrder", (Object) order);
+                    request.getRequestDispatcher("/order.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     break;
                 }
                 case "confirmOrder": {
@@ -108,52 +107,52 @@ extends HttpServlet {
                     int month = Integer.parseInt(request.getParameter("month"));
                     int year = Integer.parseInt(request.getParameter("year"));
                     int cvv = Integer.parseInt(request.getParameter("cvv"));
-                    
+
                     //Save order details to Order and OrderItem tables
                     //Add a new order in the Order table
                     //Setting order in DB
                     Order order = (Order) session.getAttribute("currentOrder");
                     order.setPaid(true);
                     orderDB.addOrder(order);
-                    
+
                     ArrayList<OrderItem> currentItems = order.getItems();
-                    
-                    for(OrderItem item: currentItems){
+
+                    for (OrderItem item : currentItems) {
                         orderItemDB.addOrderItem(item, order.getOrderNumber());
                     }
-                    
+
                     //Dispatch to the invoice page with “Paid In Full” message and no “Back To Cart”
                     //or “Purchase” links.
                     session.setAttribute("theShoppingCart", null);
-                    request.getRequestDispatcher("/order.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    request.getRequestDispatcher("/order.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     break;
                 }
                 case "viewOrders": {
                     User user = (User) session.getAttribute("theUser");
                     System.out.println("view order");
-                    
-                    if(user != null){
+
+                    if (user != null) {
                         //Retrieve list of orders from DB
                         ArrayList<Order> orders = orderDB.getAllOrders(user.getUserID());
-                        
+
                         //Add list to session as 'theOrders'
                         session.setAttribute("theOrders", orders);
-                        
+
                         //Dispatch to orderlist
-                        request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        request.getRequestDispatcher("/orderlist.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     } else {
-                        request.getRequestDispatcher("/catalog.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                        request.getRequestDispatcher("/catalog.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     }
                     break;
                 }
                 default: {
                     //TODO Change to admin page
-                    request.getRequestDispatcher("/admin.jsp").forward((ServletRequest)request, (ServletResponse)response);
+                    request.getRequestDispatcher("/admin.jsp").forward((ServletRequest) request, (ServletResponse) response);
                     break;
                 }
             }
         } else {
-            request.getRequestDispatcher("/cart.jsp").forward((ServletRequest)request, (ServletResponse)response);
+            request.getRequestDispatcher("/cart.jsp").forward((ServletRequest) request, (ServletResponse) response);
         }
     }
 

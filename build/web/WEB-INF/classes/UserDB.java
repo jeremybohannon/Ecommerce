@@ -6,7 +6,7 @@ import javax.servlet.*;
 
 public class UserDB {
 
-// This class handles the USER table.
+    // This class handles the USER table.
     public void createUserTable() {
 
         Statement statement = DbConnection.getNewStatement();
@@ -31,16 +31,16 @@ public class UserDB {
         }
     }
 
-    public boolean addUser(String firstName, String lastName, String email,
-            String address1, String address2, String city, String state,
-            String zipcode, String country, String password) {
+    public static boolean addUser(String firstName, String lastName, String email,
+                           String address1, String address2, String city, String state,
+                           String zipcode, String country, String password, String security) {
 
         Connection connection = DbConnection.getConnection();
         PreparedStatement insertRow;
         // insert the new row into the table
         try {
-            insertRow = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
+            insertRow = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
             insertRow.setString(2, firstName);
             insertRow.setString(1, lastName);
             insertRow.setString(3, email);
@@ -51,13 +51,14 @@ public class UserDB {
             insertRow.setString(8, zipcode);
             insertRow.setString(9, country);
             insertRow.setString(10, password);
+            insertRow.setString(11, security);
             insertRow.executeUpdate();
 
         } catch (SQLException se) {
             if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
                 System.out.println("ERROR: Could not insert record into USER; dup primary key");
             } else {
-                System.out.println("ERROR: Could not add row to USER table: "  + se.getCause());
+                System.out.println("ERROR: Could not add row to USER table: " + se.getCause());
             }
             return false;
         } catch (Exception e) {
@@ -70,14 +71,14 @@ public class UserDB {
         return true;
     }
 
-    public boolean addUser(User user) {
+    public static boolean addUser(User user) {
 
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
-            ps = connection.prepareStatement("INSERT INTO User VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
+            ps = connection.prepareStatement("INSERT INTO User VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
             ps.setString(1, user.getUserID());
             ps.setString(3, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -89,6 +90,7 @@ public class UserDB {
             ps.setString(9, user.getPostalCode());
             ps.setString(10, user.getCountry());
             ps.setString(11, user.getPassword());
+            ps.setString(12, user.getSecurity());
             ps.executeUpdate();
 
         } catch (SQLException se) {
@@ -123,11 +125,12 @@ public class UserDB {
         String zipcode = "";
         String country = "";
         String password = "";
+        String security = "";
 
         String query = "";
         try {
             // Find the speciic row in the table
-            query = "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password FROM User WHERE UserID =" + userID + " ORDER BY UserID";
+            query = "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password, Security FROM User WHERE UserID =" + userID + " ORDER BY UserID";
 
             resultSet = statement.executeQuery(query);
             if (!resultSet.next()) {
@@ -144,6 +147,7 @@ public class UserDB {
                 zipcode = resultSet.getString("Postal_Code");
                 country = resultSet.getString("Country");
                 password = resultSet.getString("Password");
+                security = resultSet.getString("Security");
 
                 System.out.println("Found user in user table: " + userID);
             }
@@ -153,14 +157,14 @@ public class UserDB {
             return null;
         }
 
-        return new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password);
+        return new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password, security);
     }
-    
+
     public static User getUserByEmail(String _email) {
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
-        
+
         String userID = "";
         String firstName = "";
         String lastName = "";
@@ -172,11 +176,12 @@ public class UserDB {
         String zipcode = "";
         String country = "";
         String password = "";
+        String security = "";
 
         String query = "";
         try {
             // Find the speciic row in the table
-            query = "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password FROM User WHERE Email ='" + _email + "' ORDER BY UserID";
+            query = "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password, Security FROM User WHERE Email ='" + _email + "' ORDER BY UserID";
 
             resultSet = statement.executeQuery(query);
             if (!resultSet.next()) {
@@ -194,6 +199,7 @@ public class UserDB {
                 zipcode = resultSet.getString("Postal_Code");
                 country = resultSet.getString("Country");
                 password = resultSet.getString("Password");
+                security = resultSet.getString("Security");
 
                 System.out.println("Found user in user table: " + _email);
             }
@@ -203,10 +209,10 @@ public class UserDB {
             return null;
         }
 
-        return new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password);
+        return new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password, security);
     }
 
-    public ArrayList<User> getAllUsers() {
+    public static ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
 
         Statement statement = DbConnection.getNewStatement();
@@ -223,10 +229,11 @@ public class UserDB {
         String zipcode = "";
         String country = "";
         String password = "";
+        String security = "";
         try {
             // Find the speciic row in the table
             resultSet = statement.executeQuery(
-                    "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password FROM User ORDER BY UserID");
+                    "SELECT UserID, FirstName, LastName, Email, Address_1, Address_2, City, State, Postal_Code, Country, Password, Security FROM User ORDER BY UserID");
             while (resultSet.next()) {
                 userID = resultSet.getString("userID");
                 firstName = resultSet.getString("FirstName");
@@ -239,7 +246,8 @@ public class UserDB {
                 zipcode = resultSet.getString("Postal_Code");
                 country = resultSet.getString("Country");
                 password = resultSet.getString("Password");
-                User user = new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password);
+                security = resultSet.getString("Security");
+                User user = new User(userID, firstName, lastName, email, address1, address2, city, state, zipcode, country, password, security);
                 users.add(user);
                 System.out.println("Found user in USER table: " + userID);
             }
@@ -252,15 +260,15 @@ public class UserDB {
         return users;
     }
 
-    public boolean updateUser(User user) {
+    public static boolean updateUser(User user) {
         System.out.println("\n\n[WARN]\n\n UPDATING USER: " + user.getUserID());
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("UPDATE User SET LastName=?, FirstName=?, Email=?, Address_1=?,"
-                    + " Address_2=?, City=?, State=?, Postal_Code=?, Country=?, Password=? WHERE UserID=?");
-            
+                    + " Address_2=?, City=?, State=?, Postal_Code=?, Country=?, Password=?, Security=? WHERE UserID=?");
+
             ps.setString(1, user.getLastName());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getEmail());
@@ -271,7 +279,8 @@ public class UserDB {
             ps.setString(8, user.getPostalCode());
             ps.setString(9, user.getCountry());
             ps.setString(10, user.getPassword());
-            ps.setString(11, user.getUserID());
+            ps.setString(11, user.getSecurity());
+            ps.setString(12, user.getUserID());
 
             ps.executeUpdate();
 

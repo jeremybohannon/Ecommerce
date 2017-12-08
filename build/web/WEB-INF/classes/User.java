@@ -3,7 +3,7 @@
 import java.io.Serializable;
 
 public class User
-implements Serializable {
+        implements Serializable {
     String firstName;
     String lastName;
     String email;
@@ -15,7 +15,8 @@ implements Serializable {
     String country;
     String userID;
     String password;
-    
+    String security;
+
     public User() {
         this.userID = "";
         this.firstName = "";
@@ -28,9 +29,10 @@ implements Serializable {
         this.postalCode = "";
         this.country = "";
         this.password = "";
+        this.security = "";
     }
 
-    public User(String userID, String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country, String password) {
+    public User(String userID, String firstName, String lastName, String emailAddress, String address1, String address2, String city, String state, String postalCode, String country, String password, String security) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,8 +44,17 @@ implements Serializable {
         this.postalCode = postalCode;
         this.country = country;
         this.password = password;
+        this.security = security;
     }
-    
+
+    public String getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(String security) {
+        this.security = security;
+    }
+
     public String getUserID() {
         return userID;
     }
@@ -131,5 +142,5 @@ implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }

@@ -8,14 +8,14 @@ public class OrderDB {
 
 
     public boolean addOrder(String orderNumber, String date, String userID,
-            String taxRate, String totalCost, String paid) {
+                            String taxRate, String totalCost, String paid) {
 
         Connection connection = DbConnection.getConnection();
         PreparedStatement insertRow;
         // insert the new row into the table
         try {
             insertRow = connection.prepareStatement("INSERT INTO Order VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
+
             insertRow.setInt(1, Integer.parseInt(orderNumber));
             insertRow.setString(2, date);
             insertRow.setString(3, userID);
@@ -28,7 +28,7 @@ public class OrderDB {
             if (((se.getErrorCode() == 30000) && ("23505".equals(se.getSQLState())))) {
                 System.out.println("ERROR: Could not insert record into Order; dup primary key");
             } else {
-                System.out.println("ERROR: Could not add row to Order table: "  + se.getCause());
+                System.out.println("ERROR: Could not add row to Order table: " + se.getCause());
             }
             return false;
         } catch (Exception e) {
@@ -48,13 +48,13 @@ public class OrderDB {
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("INSERT INTO miata.Order VALUES ( ?, ?, ?, ?, ?, ?)");
-            
+
             ps.setInt(1, order.getOrderNumber());
             ps.setString(2, order.getDate());
             ps.setString(3, order.getUser().getUserID());
-            ps.setString(4, order.getTaxRate()+"");
-            ps.setString(5, order.getTotalCost()+"");
-            ps.setString(6, order.isPaid()+"");
+            ps.setString(4, order.getTaxRate() + "");
+            ps.setString(5, order.getTotalCost() + "");
+            ps.setString(6, order.isPaid() + "");
             ps.executeUpdate();
 
         } catch (SQLException se) {
@@ -78,7 +78,7 @@ public class OrderDB {
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
-        
+
         int orderNumber = 0;
         String date = "";
         String userID = "";
@@ -103,9 +103,9 @@ public class OrderDB {
                 taxRate = resultSet.getString("taxRate");
                 totalCost = resultSet.getString("totalCost");
                 isPaid = resultSet.getString("paid");
-                
+
                 user = UserDB.getUser(userID);
-                
+
 
                 System.out.println("Found user in user table: " + userID);
             }
@@ -114,17 +114,17 @@ public class OrderDB {
             System.out.println("SQL error: " + se);
             return null;
         }
-        
+
         return new Order(orderNumber, date, taxRate, totalCost, isPaid, user);
     }
 
-    public ArrayList<Order> getAllOrders() {
+    public static ArrayList<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList<>();
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
         int orderNumber = 0;
-        
+
         try {
             // Find the speciic row in the table
             resultSet = statement.executeQuery(
@@ -143,14 +143,14 @@ public class OrderDB {
         }
         return orders;
     }
-    
-        public ArrayList<Order> getAllOrders(String userID) {
+
+    public ArrayList<Order> getAllOrders(String userID) {
         ArrayList<Order> orders = new ArrayList<>();
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
         int orderNumber = 0;
-        
+
         try {
             // Find the speciic row in the table
             resultSet = statement.executeQuery(
@@ -169,15 +169,15 @@ public class OrderDB {
         }
         return orders;
     }
-        
-        public static boolean updateOrderTotal(int OrderNumber, double totalCost){
+
+    public static boolean updateOrderTotal(int OrderNumber, double totalCost) {
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("UPDATE miata.Order SET TotalCost=? WHERE OrderNumber=?");
-            
-            ps.setString(1, totalCost+"");
+
+            ps.setString(1, totalCost + "");
             ps.setInt(2, OrderNumber);
 
             ps.executeUpdate();

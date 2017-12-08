@@ -13,10 +13,10 @@ public class OrderItemDB {
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("INSERT INTO miata.OrderItem VALUES ( ?, ?, ?)");
-            
+
             ps.setInt(1, orderNumber);
             ps.setString(2, orderItem.getProduct().getProductCode());
-            ps.setString(3, orderItem.getQuantity()+"");
+            ps.setString(3, orderItem.getQuantity() + "");
             ps.executeUpdate();
 
         } catch (SQLException se) {
@@ -40,7 +40,7 @@ public class OrderItemDB {
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
-        
+
         int orderNumber = 0;
         String productCode = "";
         String quantity = "";
@@ -65,29 +65,29 @@ public class OrderItemDB {
             System.out.println("SQL error: " + se);
             return null;
         }
-        
+
         return new OrderItem(ProductDB.getProduct(productCode), Integer.parseInt(quantity));
     }
-    
+
     public static ArrayList<OrderItem> getAllOrders(int orderID) {
         ArrayList<OrderItem> orders = new ArrayList<>();
 
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
         String quantity, productCode = "";
-        
+
         try {
             // Find the speciic row in the table
             resultSet = statement.executeQuery(
-                    "SELECT orderNumber, productCode, quantity FROM miata.OrderItem WHERE OrderNumber ="+orderID+" ORDER BY orderNumber");
+                    "SELECT orderNumber, productCode, quantity FROM miata.OrderItem WHERE OrderNumber =" + orderID + " ORDER BY orderNumber");
             while (resultSet.next()) {
                 productCode = resultSet.getString("productCode");
                 quantity = resultSet.getString("quantity");
-                
+
                 Product product = ProductDB.getProduct(productCode);
-                
+
                 OrderItem temp = new OrderItem(product, Integer.parseInt(quantity));
-                
+
                 orders.add(temp);
             }
         } catch (SQLException se) {
@@ -104,7 +104,7 @@ public class OrderItemDB {
         Statement statement = DbConnection.getNewStatement();
         ResultSet resultSet = null;
         int orderNumber = 0;
-        
+
         try {
             // Find the speciic row in the table
             resultSet = statement.executeQuery(
@@ -122,14 +122,14 @@ public class OrderItemDB {
         }
         return orders;
     }
-    
-    public static boolean updateOrderItem(int OrderNumber, String productCode, String quantity){
+
+    public static boolean updateOrderItem(int OrderNumber, String productCode, String quantity) {
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("UPDATE miata.OrderItem SET Quantity=? WHERE OrderNumber=? AND ProductCode=?");
-            
+
             ps.setString(1, quantity);
             ps.setInt(2, OrderNumber);
             ps.setString(3, productCode);

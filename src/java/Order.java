@@ -20,8 +20,8 @@ public class Order implements Serializable {
         this.totalCost = 0.0;
         this.paid = false;
     }
-    
-    public Order(int orderNumber, String date, String taxRate, String totalCost, String paid, User user){
+
+    public Order(int orderNumber, String date, String taxRate, String totalCost, String paid, User user) {
         this.orderNumber = orderNumber;
         this.date = date;
         this.taxRate = Double.parseDouble(taxRate);

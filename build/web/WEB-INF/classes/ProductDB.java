@@ -36,8 +36,8 @@ public class ProductDB {
         }
     }
 
-    public Product addProduct(String productCode, String productName, String categoryCode, String catalogCategory,
-            float price, String description, String imageUrl) {
+    public static Product addProduct(String productCode, String productName, String categoryCode, String catalogCategory,
+                              float price, String description, String imageUrl) {
 
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
@@ -69,7 +69,7 @@ public class ProductDB {
         return new Product(productCode, productName, categoryCode, description, price, imageUrl);
     }
 
-    public Product addProduct(Product product) {
+    public static Product addProduct(Product product) {
 
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
@@ -129,7 +129,7 @@ public class ProductDB {
         }
         return product;
     }
-    
+
     public static ArrayList<Product> getAllProducts() {
         ArrayList<Product> products = new ArrayList<Product>();
 
@@ -147,7 +147,7 @@ public class ProductDB {
             resultSet = statement.executeQuery(
                     "SELECT ProductCode, Name, CatelogCategory, Description, Price, ImageURL FROM product ORDER BY productCode");
             while (resultSet.next()) {
-                productCode = ""+resultSet.getInt("ProductCode");
+                productCode = "" + resultSet.getInt("ProductCode");
                 productName = resultSet.getString("Name");
                 catalogCategory = resultSet.getString("CatelogCategory");
                 price = resultSet.getFloat("Price");
@@ -166,14 +166,14 @@ public class ProductDB {
 
         return products;
     }
-    
-    public static boolean updateProduct(Product product){
+
+    public static boolean updateProduct(Product product) {
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("UPDATE miata.Product SET Name=?, CatelogCategory=?, Description=?, Price=?, ImageURL=? WHERE ProductCode=?");
-            
+
             ps.setString(1, product.getProductName());
             ps.setString(2, product.getCategory());
             ps.setString(3, product.getDescription());
@@ -181,7 +181,7 @@ public class ProductDB {
             ps.setString(5, product.getImageURL());
             ps.setInt(6, Integer.parseInt(product.getProductCode()));
 
-            
+
             ps.executeUpdate();
 
         } catch (SQLException se) {
@@ -197,16 +197,16 @@ public class ProductDB {
         }
         return true;
     }
-    
-    public static boolean deleteProduct(int productCode){
+
+    public static boolean deleteProduct(int productCode) {
         Connection connection = DbConnection.getConnection();
         PreparedStatement ps;
         // insert the new row into the table
         try {
             ps = connection.prepareStatement("DELETE FROM miata.Product WHERE ProductCode=?");
-            
+
             ps.setInt(1, productCode);
-            
+
             ps.executeUpdate();
 
         } catch (SQLException se) {
@@ -222,6 +222,6 @@ public class ProductDB {
         }
         return true;
     }
-    
+
 
 }
