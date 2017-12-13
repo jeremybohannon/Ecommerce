@@ -115,3 +115,7 @@ VALUES ("joel", "sesame"), ("andrea", "sesame");
 
 INSERT INTO miata.Order (OrderNumber, Date, UserID, TaxRate, TotalCost, Paid)
 VALUES(42, "2017-11-19", "2", ".07", "123.45", "true");
+
+-- ----------------------------
+--  End of Script
+-- ----------------------------
